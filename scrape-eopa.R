@@ -55,3 +55,7 @@ for (i in page_button_indinces) {
     bind_rows(cur_table)
 }
 
+table <- table |> 
+  distinct()
+
+write_csv(table, "data/temp/letters_of_support.csv")

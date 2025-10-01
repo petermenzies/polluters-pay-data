@@ -11,4 +11,6 @@ sheet_url <- "https://docs.google.com/spreadsheets/d/1UZFvmtcQGvsB7FzvAjqNTXwuIH
 
 resolutions <- read_sheet("https://docs.google.com/spreadsheets/d/1UZFvmtcQGvsB7FzvAjqNTXwuIHFGgL1FqZwzedBHfKw/edit?gid=0#gid=0")
 
+write_csv(resolutions, "data/temp/resolutions.csv")
+
 gs4_deauth()
