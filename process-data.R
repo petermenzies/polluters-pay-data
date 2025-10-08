@@ -90,7 +90,7 @@ letters_senate <- letters_summary |>
   left_join(senate_cities) |> 
   group_by(senate_district_label) |> 
   reframe(
-    number_of_letters = n(),
+    number_of_letters = sum(number_of_letters),
     letter_authors = paste(letter_authors, collapse = ", ")
   )
 
@@ -98,21 +98,50 @@ letters_assembly <- letters_summary |>
   left_join(assembly_cities) |> 
   group_by(assembly_district_label) |> 
   reframe(
-    number_of_letters = n(),
+    number_of_letters = sum(number_of_letters),
     letter_authors = paste(letter_authors, collapse = ", ")
   )
-
-# walkouts
-
 
 # assembly districts
 assembly <- assembly_districts |> 
   left_join(county_res_assembly) |> 
   left_join(city_res_assembly) |> 
-  left_join(letters_assembly)
+  left_join(letters_assembly) |> 
+  mutate(
+    activity = ifelse(
+      is.na(number_of_walkouts) &
+        is.na(county_resolutions_passed) &
+        is.na(city_resolutions_passed) &
+        is.na(number_of_letters),
+      FALSE,
+      TRUE
+    )
+  )
+
+write_sf(
+  assembly,
+  "data/temp/assembly.geojson",
+  delete_dsn = T
+)
 
 # senate districts
 senate <- senate_districts |> 
   left_join(county_res_senate) |> 
   left_join(city_res_senate) |> 
-  left_join(letters_senate)
+  left_join(letters_senate) |> 
+  mutate(
+  activity = ifelse(
+    is.na(number_of_walkouts) &
+      is.na(county_resolutions_passed) &
+      is.na(city_resolutions_passed) &
+      is.na(number_of_letters),
+    FALSE,
+    TRUE
+  )
+)
+
+write_sf(
+  senate,
+  "data/temp/senate.geojson",
+  delete_dsn = T
+)
