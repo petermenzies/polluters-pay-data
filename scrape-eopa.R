@@ -1,4 +1,5 @@
-library(tidyverse)
+library(dplyr)
+library(readr)
 library(chromote)
 library(rvest)
 
