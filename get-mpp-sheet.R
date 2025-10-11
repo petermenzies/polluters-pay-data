@@ -1,4 +1,5 @@
 library(googlesheets4)
+library(readr)
 
 path_to_json <- list.files("auth", pattern = ".json", full.names = TRUE)
   
