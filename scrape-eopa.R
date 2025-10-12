@@ -6,13 +6,15 @@ library(rvest)
 # navigate to page
 b <- ChromoteSession$new()
 b$Page$navigate("https://eopacodeblue.org/superfund/")
-Sys.sleep(5)
+Sys.sleep(20)
 
 # get first table
 html <- b$DOM$getDocument()
+
 content <- b$DOM$getOuterHTML(html$root$nodeId)
 
 page <- read_html(content$outerHTML)
+
 table <- page |> 
   html_element("#footable_709") |> 
   html_table()
@@ -39,7 +41,7 @@ for (i in page_button_indinces) {
     expression = paste0("document.querySelector('", next_page_selector, "').click();")
   )
 
-  Sys.sleep(3)
+  Sys.sleep(5)
 
   html <- b$DOM$getDocument()
   content <- b$DOM$getOuterHTML(html$root$nodeId)
